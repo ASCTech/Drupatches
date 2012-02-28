@@ -1,0 +1,22 @@
+diff --git a/shib_auth.module b/shib_auth.module
+index b7f9672..98a0b35 100644
+--- a/shib_auth.module
++++ b/shib_auth.module
+@@ -159,7 +159,7 @@ function shib_auth_terminate_session($msg='') {
+ function shib_auth_session_check($uname) {
+   global $user;
+   // if the user IS logged in as non-admin, but we're missing Shibboleth identity
+-  if (!shib_auth_session_valid() && $_SESSION['shib_auth_authentication'] == 'shib_auth' &&
++  if (!shib_auth_session_valid() && isset($_SESSION['shib_auth_authentication']) == 'shib_auth' &&
+       shib_auth_config('auto_destroy_session') && $user->uid > 1) {
+     shib_auth_terminate_session('Your session is expired. Please log in again.');
+     return FALSE;
+@@ -600,7 +600,7 @@ function shib_auth_init() {
+ 
+   /* We want to return as early as possible if we have nothing to do.
+   But for checking the session, we need the username first (if it's set) */
+-  $uname = $_SERVER[shib_auth_config('username_variable')];
++  $uname = isset($_SERVER[shib_auth_config('username_variable')]) ? $_SERVER[shib_auth_config('username_variable')] : "";
+ 
+   // Storing whether the user was already logged in or not
+   $alreadyloggedin = (user_is_anonymous())?False:True;
