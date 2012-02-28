@@ -1,5 +1,5 @@
 diff --git a/shib_auth.module b/shib_auth.module
-index b7f9672..98a0b35 100644
+index b7f9672..6075480 100644
 --- a/shib_auth.module
 +++ b/shib_auth.module
 @@ -159,7 +159,7 @@ function shib_auth_terminate_session($msg='') {
@@ -11,6 +11,15 @@ index b7f9672..98a0b35 100644
        shib_auth_config('auto_destroy_session') && $user->uid > 1) {
      shib_auth_terminate_session('Your session is expired. Please log in again.');
      return FALSE;
+@@ -351,7 +351,7 @@ function shib_login_authmap($uname, $umail_single, $uid, $alreadyloggedin=False)
+         //check if there isn't any user with this e-mail (whose name is different)
+         $email_for_other_user_query =
+         db_query("SELECT * FROM {users} WHERE mail='%s' AND uid <> '%s'", $umail_single, $user->uid);
+-        $email_for_other_user = db_fetch_object($username_and_email_query);
++        $email_for_other_user = isset($username_and_email_query) ? db_fetch_object($username_and_email_query) : "";
+         if ($email_for_other_user) {
+           shib_auth_error('[shib_login_authmap] Error saving user account. E-mail address is already used.');
+         }
 @@ -600,7 +600,7 @@ function shib_auth_init() {
  
    /* We want to return as early as possible if we have nothing to do.
@@ -20,3 +29,12 @@ index b7f9672..98a0b35 100644
  
    // Storing whether the user was already logged in or not
    $alreadyloggedin = (user_is_anonymous())?False:True;
+@@ -647,7 +647,7 @@ function shib_auth_init() {
+   $existing_authmap = shib_auth_load_from_authmap($uname);
+ 
+   //Check whether CONSENT VERSION is CHANGED, if so, users have to accept it again
+-  if ($_POST['form_id'] == 'shib_auth_custom_data' && $_POST['accept'] && $_POST['op'] != t('Cancel'))
++  if (isset($_POST['form_id']) && $_POST['form_id'] == 'shib_auth_custom_data' && $_POST['accept'] && $_POST['op'] != t('Cancel'))
+     $consent_accepted = (bool) $_POST['accept'];
+ 
+   //*********** LOGIN EXISTING USER ***************
