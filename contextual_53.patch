@@ -7,7 +7,7 @@ index 0fa148e..2f5f223 100644
          'query' => array('destination' => $_GET['q']),
        );
 -      if ($display_id = $object->display_handler->display->id ) {
-+      if (isset($object)) && ($display_id = $object->display_handler->display->id ) {
++      if ((isset($object->display_handler->display->id)) && ($display_id = $object->display_handler->display->id )) {
          $links['views-edit']['fragment'] = 'views-tab-'. $display_id;
        
 }
