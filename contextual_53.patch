@@ -1,13 +1,12 @@
-diff --git a/contextual.module b/contextual.module
-index 0fa148e..2f5f223 100644
---- a/contextual.module
-+++ b/contextual.module
-@@ -121,7 +121,7 @@ function views_admin_link($type, $object) {
+diff --git a/modules/contextual/contextual.module b/modules/contextual/contextual.module
+index 0fa148e..651bf20 100644
+--- a/modules/contextual/contextual.module
++++ b/modules/contextual/contextual.module
+@@ -121,7 +121,6 @@ function views_admin_link($type, $object) {
          'attributes' => array('class' => 'icon-edit'),
          'query' => array('destination' => $_GET['q']),
        );
 -      if ($display_id = $object->display_handler->display->id) {
-+      if ((isset($object->display_handler->display->id)) && ($display_id = $object->display_handler->display->id)) {
          $links['views-edit']['fragment'] = 'views-tab-'. $display_id;
        }
-    }
+     }
